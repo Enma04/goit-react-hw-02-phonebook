@@ -23,9 +23,16 @@
     cursor: pointer;
 }
 
+.filterText {
+    font-size: 19px;
+    margin: 20px 0;
+}
+
 .contactList {
     font-size: 20px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-.contactItem {}
+.inputFilter {
+    margin-bottom: 20px;
+}

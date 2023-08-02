@@ -16,22 +16,24 @@ export class App extends Component {
     super(props);
     this.state = {
       contacts: [
-        {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-        {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-        {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-        {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+        { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+        { id: 'id-9', name: 'Rosie Carmen', number: '459-12-56' },
+        { id: 'id-7', name: 'rosie Fernando', number: '459-12-56' },
+        { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+        { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+        { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
       ],
-      filter: '',
+      contactsFiltered: [],
       name: '',
       number: '',
     };
     this.handleReset = this.handleReset.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   handleReset = e => {
-    console.log(e);
     this.setState({ ...INITIAL_STATE });
     e.target[0].value = '';
     e.target[1].value = '';
@@ -40,9 +42,8 @@ export class App extends Component {
   handleChange = evt => {
     const name = evt.target.name;
     const value = evt.target.value;
-    console.log("evento: ", evt.target.name);
-    if(name === "name") this.setState({ name: value });
-    if(name === "number") this.setState({ number: value });
+    if (name === 'name') this.setState({ name: value });
+    if (name === 'number') this.setState({ number: value });
   };
 
   handleSubmit = evt => {
@@ -53,8 +54,17 @@ export class App extends Component {
     this.handleReset(evt);
   };
 
-  render() {
+  handleFilter(evt) {
+    const value = evt.target.value;
     const { contacts } = this.state;
+    const aux = contacts.filter(item =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
+    this.setState({ contactsFiltered: aux });
+  }
+
+  render() {
+    const { contacts, contactsFiltered } = this.state;
     return (
       <div
         style={{
@@ -68,7 +78,7 @@ export class App extends Component {
         }}
       >
         <form className={css.contactsForm} onSubmit={this.handleSubmit}>
-          <h3 className={css.contactsH3} >Phonebooks</h3>
+          <h3 className={css.contactsH3}>Phonebooks</h3>
           <label htmlFor="">
             <span>Name</span>
             <br />
@@ -94,18 +104,31 @@ export class App extends Component {
               required
             />
           </label>
-          <button className={css.contactsBtnSubmit} type="submit">Add contact</button>
+          <button className={css.contactsBtnSubmit} type="submit">
+            Add contact
+          </button>
         </form>
-        <h3 className={css.contactsH3} >Contacts</h3>
-          <ul className={css.contactList}>
-            {this.state.contacts.length !== 0
-              ? contacts.map((person, index) => (
-                  <li key={person.id} className={css.contactItem}>
-                    {person.name}: {person.number}
-                  </li>
-                ))
-              : null}
-          </ul>
+        <h3 className={css.contactsH3}>Contacts</h3>
+        <span className={css.filterText} >Find contacts by name</span>
+        <input
+          type="text"
+          name="filter"
+          className={css.inputFilter}
+          onChange={this.handleFilter}
+        />
+        <ul className={css.contactList}>
+          {this.state.contactsFiltered.length !== 0
+            ? contactsFiltered.map((person, index) => (
+                <li key={person.id} className={css.contactItem}>
+                  {person.name}: {person.number}
+                </li>
+              ))
+            : contacts.map((contact) => (
+                <li key={contact.id} className={css.contactItem}>
+                  {contact.name}: {contact.number}
+                </li>
+              ))}
+        </ul>
       </div>
     );
   }
