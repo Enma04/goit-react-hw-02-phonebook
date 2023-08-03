@@ -66,7 +66,6 @@ export class App extends Component {
   }
 
   render() {
-    const { contacts, contactsFiltered } = this.state;
     return (
       <div className={css.container} >
         <ContactForm
