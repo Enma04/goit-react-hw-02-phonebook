@@ -10,10 +10,6 @@ const INITIAL_STATE = {
 };
 
 export class App extends Component {
-  static defaultProps = {};
-
-  static propTypes = {};
-
   constructor(props) {
     super(props);
     this.state = {
@@ -29,10 +25,22 @@ export class App extends Component {
       name: '',
       number: '',
     };
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
+    //this.handleValidate = this.handleValidate.bind(this);
+  }
+
+  handleDelete(e) {
+    const { contacts } = this.state;
+    const name = e.target.parentNode.firstChild.data;
+    if (contacts.map(item => item.name).includes(name)) {
+      const position = contacts.findIndex( contact => contact.name === name );
+      contacts.splice(position, 1);
+      this.setState({ contacts });
+    }
   }
 
   handleReset = e => {
@@ -51,8 +59,12 @@ export class App extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     const { name, number, contacts } = this.state;
-    const id = nanoid();
-    contacts.push({ name, number, id });
+    if (contacts.map(item => item.name).includes(name)) {
+      alert('El contacto ya existe');
+    } else {
+      const id = nanoid();
+      contacts.push({ name, number, id });
+    }
     this.handleReset(evt);
   };
 
@@ -67,13 +79,17 @@ export class App extends Component {
 
   render() {
     return (
-      <div className={css.container} >
+      <div className={css.container}>
         <ContactForm
           handleReset={this.handleReset}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
         />
-        <Filter { ...this.state } handleFilter={this.handleFilter} />
+        <Filter
+          {...this.state}
+          handleFilter={this.handleFilter}
+          handleDelete={this.handleDelete}
+        />
       </div>
     );
   }
