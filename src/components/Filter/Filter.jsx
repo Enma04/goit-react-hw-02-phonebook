@@ -18,7 +18,7 @@ export default class Filter extends Component {
             ? this.props.contactsFiltered.map((person, index) => (
                 <li key={person.id} className={css.contactItem}>
                   {person.name}: {person.number}
-									<button>Delete</button>
+									<button onClick={this.props.handleDelete} >Delete</button>
                 </li>
               ))
             : this.props.contacts.map(contact => (
