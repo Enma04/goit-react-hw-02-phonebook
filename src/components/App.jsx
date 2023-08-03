@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import css from './App.module.css';
 import { nanoid } from 'nanoid';
+import ContactForm from './ContactForm/ContactForm';
+import Filter from './Filter/Filter';
 
 const INITIAL_STATE = {
   name: '',
@@ -66,69 +68,13 @@ export class App extends Component {
   render() {
     const { contacts, contactsFiltered } = this.state;
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 30,
-          color: '#010101',
-        }}
-      >
-        <form className={css.contactsForm} onSubmit={this.handleSubmit}>
-          <h3 className={css.contactsH3}>Phonebooks</h3>
-          <label htmlFor="">
-            <span>Name</span>
-            <br />
-            <input
-              type="text"
-              name="name"
-              className="inputName"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <label htmlFor="">
-            <span>Number</span>
-            <br />
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <button className={css.contactsBtnSubmit} type="submit">
-            Add contact
-          </button>
-        </form>
-        <h3 className={css.contactsH3}>Contacts</h3>
-        <span className={css.filterText} >Find contacts by name</span>
-        <input
-          type="text"
-          name="filter"
-          className={css.inputFilter}
-          onChange={this.handleFilter}
+      <div className={css.container} >
+        <ContactForm
+          handleReset={this.handleReset}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
         />
-        <ul className={css.contactList}>
-          {this.state.contactsFiltered.length !== 0
-            ? contactsFiltered.map((person, index) => (
-                <li key={person.id} className={css.contactItem}>
-                  {person.name}: {person.number}
-                </li>
-              ))
-            : contacts.map((contact) => (
-                <li key={contact.id} className={css.contactItem}>
-                  {contact.name}: {contact.number}
-                </li>
-              ))}
-        </ul>
+        <Filter { ...this.state } handleFilter={this.handleFilter} />
       </div>
     );
   }
