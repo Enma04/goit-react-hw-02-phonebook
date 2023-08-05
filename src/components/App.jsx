@@ -34,6 +34,7 @@ export class App extends Component {
   }
 
   handleDelete(e) {
+    console.log("event: ", e);
     const { contacts } = this.state;
     const name = e.target.parentNode.firstChild.data;
     if (contacts.map(item => item.name).includes(name)) {
