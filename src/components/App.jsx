@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import css from './App.module.css';
-import { nanoid } from 'nanoid';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
+//----------- external imports
+import { nanoid } from 'nanoid';
+import Swal from 'sweetalert2';
 
 const INITIAL_STATE = {
   name: '',
@@ -33,14 +35,14 @@ export class App extends Component {
   }
 
   handleDelete(e) {
-    console.log("event: ", e);
-    const { contacts } = this.state;
     const name = e.target.parentNode.firstChild.data;
-    if (contacts.map(item => item.name).includes(name)) {
-      const position = contacts.findIndex( contact => contact.name === name );
-      contacts.splice(position, 1);
-      this.setState({ contacts });
-    }
+    this.setState( (prevState) => (
+      Swal.fire(`${name} eliminado!`),
+      {
+        contacts: [...prevState.contacts.filter( item => item.name !== name )],
+        contactsFiltered: [...prevState.contactsFiltered.filter( item => item.name !== name )]
+      }
+    ));
   }
 
   handleReset = e => {
@@ -61,7 +63,10 @@ export class App extends Component {
     const { name, number, contacts } = this.state;
 
     if (contacts.map(item => item.name).includes(name)) {
-      alert('El contacto ya existe');
+      Swal.fire('El contacto ya existe!');
+    }
+    else if (contacts.map(item => item.number).includes(number)) {
+      Swal.fire('Este numero ya esta agregado!');
     }
     else {
       const id = "id-" + contacts.length + "-" + nanoid(2);
