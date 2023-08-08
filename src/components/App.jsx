@@ -51,10 +51,10 @@ export class App extends Component {
   };
 
   handleChange = evt => {
-    const name = evt.target.name;
-    const value = evt.target.value;
-    if (name === 'name') this.setState({ name: value });
-    if (name === 'number') this.setState({ number: value });
+    const {name, value} = evt.target;
+    this.setState( () => ({
+      [name]: value,
+    }));
   };
 
   handleSubmit = evt => {
