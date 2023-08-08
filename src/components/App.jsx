@@ -37,12 +37,12 @@ export class App extends Component {
   handleDelete(e) {
     const name = e.target.parentNode.firstChild.data;
     this.setState( (prevState) => (
-      Swal.fire(`${name} eliminado!`),
       {
         contacts: [...prevState.contacts.filter( item => item.name !== name )],
         contactsFiltered: [...prevState.contactsFiltered.filter( item => item.name !== name )]
       }
     ));
+    Swal.fire(`${name} eliminado!`);
   }
 
   handleReset = e => {
