@@ -59,11 +59,15 @@ export class App extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     const { name, number, contacts } = this.state;
+
     if (contacts.map(item => item.name).includes(name)) {
       alert('El contacto ya existe');
-    } else {
-      const id = nanoid();
-      contacts.push({ name, number, id });
+    }
+    else {
+      const id = "id-" + contacts.length + "-" + nanoid(2);
+      this.setState( prevState => ({
+        contacts: [...prevState.contacts, {id, number, name}],
+      }));
     }
     this.handleReset(evt);
   };
